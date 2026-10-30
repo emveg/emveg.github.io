@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=2">
 </head>
 <body>
   <header class="hero" style="background-image:url('images/work/mellos-funk/bg0017-col-v01.jpg'); background-position:center 55%">
@@ -59,10 +59,14 @@
             <a href="https://www.imdb.com/title/tt34059801/" target="_blank" rel="noopener">IMDb</a>
           </div>
         </div>
-      </div>
-      <h2>Trailer</h2>
-      <div class="reel">
-        <iframe src="https://www.youtube-nocookie.com/embed/nQhj7lxQwY4" title="Mello's Funk trailer" allow="fullscreen; picture-in-picture; encrypted-media" loading="lazy"></iframe>
+        <a class="trailer-card" href="https://www.youtube.com/watch?v=nQhj7lxQwY4" target="_blank" rel="noopener">
+          <span class="trailer-thumb">
+            <img src="https://i.ytimg.com/vi/nQhj7lxQwY4/hqdefault.jpg" alt="" loading="lazy">
+            <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+          </span>
+          <span class="trailer-label">Watch the trailer <span aria-hidden="true">↗</span></span>
+          <span class="trailer-sub">Trailer · Le Cube · opens YouTube</span>
+        </a>
       </div>
     </section>
 
@@ -160,6 +164,6 @@
         </div>
     </div>
   </footer>
-  <script src="site.js"></script>
+  <script src="site.js?v=2"></script>
 </body>
 </html>

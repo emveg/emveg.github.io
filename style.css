@@ -222,6 +222,44 @@ main { padding: 0 var(--gutter) 80px; }
 }
 .project-poster { width: 100%; border-radius: var(--radius); }
 
+/* Project intro with a trailer preview card on the right */
+.project-intro:has(.trailer-card) { grid-template-columns: minmax(0, 240px) minmax(0, 1fr) minmax(0, 320px); }
+.trailer-card {
+  display: block;
+  text-decoration: none;
+  padding: 10px 10px 14px;
+  background: var(--panel);
+  border-radius: calc(var(--radius) + 4px);
+  transition: transform .25s, box-shadow .25s;
+}
+.trailer-card:hover { transform: translateY(-4px); box-shadow: 0 14px 30px rgba(0,0,0,.35); }
+.trailer-thumb { position: relative; display: block; }
+.trailer-thumb img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;              /* trims the black bars YouTube adds to thumbnails */
+  border-radius: var(--radius);
+}
+.trailer-thumb .play {
+  position: absolute; left: 50%; top: 50%;
+  width: 56px; height: 56px;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--bg);
+  transform: translate(-50%, -50%);
+  box-shadow: 0 6px 18px rgba(0,0,0,.4);
+  transition: transform .25s;
+}
+.trailer-card:hover .play { transform: translate(-50%, -50%) scale(1.08); }
+.play svg { width: 26px; height: 26px; fill: currentColor; margin-left: 3px; }
+.trailer-label { display: block; margin: 12px 4px 0; font-family: var(--display); font-weight: 600; font-size: 18px; }
+.trailer-sub { display: block; margin: 2px 4px 0; color: var(--muted); font-size: 14px; }
+@media (max-width: 1100px) {
+  .project-intro:has(.trailer-card) { grid-template-columns: minmax(0, 220px) minmax(0, 1fr); }
+  .trailer-card { grid-column: 2; max-width: 380px; }
+}
+
 /* Justified rows: each figure's --r is its width/height ratio, so every row
    fills the full width and all images in a row share one height */
 .gallery.rows { columns: auto; display: grid; gap: 8px; }
@@ -475,7 +513,8 @@ footer a { color: var(--muted); }
   .nav ul { flex-direction: column; gap: 10px; }
   .submenu { position: static; display: flex !important; gap: 10px !important; background: none; border-top: 0; padding: 10px 0 0 12px !important; }
   .submenu a { padding: 4px 0; }
-  .project, .project-intro { grid-template-columns: 1fr; }
+  .project, .project-intro, .project-intro:has(.trailer-card) { grid-template-columns: 1fr; }
+  .trailer-card { grid-column: auto; }
   .gallery.rows .row { flex-direction: column; }
   .ep-rail { display: none; }   /* phones use the jump links at the top and the arrow */
   .gallery.rows figure { flex: none; }
