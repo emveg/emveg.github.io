@@ -258,6 +258,50 @@ main { padding: 0 var(--gutter) 80px; }
   font-weight: 600;
 }
 
+/* Area restoration viewer: one card per area, buttons cross-fade between its states */
+.areas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 560px), 1fr));
+  gap: 20px;
+}
+.area {
+  margin: 0;
+  padding: 12px;
+  background: var(--panel);
+  border-radius: calc(var(--radius) + 6px);
+}
+.area h3 { margin: 4px 6px 12px; font-family: var(--display); font-weight: 600; font-size: 22px; }
+.states {
+  position: relative;
+  aspect-ratio: var(--r);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--bg);
+  cursor: zoom-in;
+}
+.states img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .45s ease;
+}
+.states img.on { opacity: 1; pointer-events: auto; }
+.state-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.state-tabs button {
+  flex: 1 1 auto;
+  padding: 7px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: none;
+  color: var(--text);
+  font: 600 14px var(--body);
+  cursor: pointer;
+}
+.state-tabs button:hover { border-color: var(--accent); color: var(--fg); }
+.state-tabs button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+
 /* Single animation project page */
 .back { color: var(--muted); text-decoration: none; }
 .back:hover { color: var(--accent); }

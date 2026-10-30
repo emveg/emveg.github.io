@@ -25,6 +25,29 @@ document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") box.classList.remove("open");
 });
 
+// Area restoration viewers: each button shows one state of the area
+document.querySelectorAll(".area").forEach((area) => {
+  const imgs = [...area.querySelectorAll(".states img")];
+  const buttons = [...area.querySelectorAll(".state-tabs button")];
+  // the other states only download once someone points at or uses this card
+  const loadAll = () => imgs.forEach((img) => { if (img.dataset.src) { img.src = img.dataset.src; delete img.dataset.src; } });
+  area.addEventListener("pointerenter", loadAll, { once: true });
+  area.addEventListener("focusin", loadAll, { once: true });
+  buttons.forEach((btn, i) => {
+    btn.addEventListener("click", () => {
+      loadAll();
+      imgs.forEach((img, j) => img.classList.toggle("on", i === j));
+      buttons.forEach((b, j) => b.setAttribute("aria-pressed", i === j));
+    });
+  });
+  area.querySelector(".states").addEventListener("click", () => {
+    const shown = area.querySelector(".states img.on");
+    boxImg.src = shown.src;
+    boxImg.alt = shown.alt;
+    box.classList.add("open");
+  });
+});
+
 // Line-to-colour sliders
 document.querySelectorAll(".compare input").forEach((range) => {
   range.addEventListener("input", () => range.parentElement.style.setProperty("--pos", range.value + "%"));
