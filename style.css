@@ -210,6 +210,54 @@ main { padding: 0 var(--gutter) 80px; }
 }
 .poster-meta { display: block; color: var(--muted); font-size: 14px; }
 
+/* Covers made from artwork: title set over the bottom of the image */
+.poster-art { position: relative; display: block; }
+.poster-name {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  padding: 60px 16px 16px;
+  border-radius: 0 0 var(--radius) var(--radius);
+  background: linear-gradient(transparent, rgba(20, 14, 10, .85));
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: clamp(24px, 2.4vw, 32px);
+  line-height: 1.1;
+  text-shadow: 0 2px 10px rgba(0,0,0,.5);
+  transition: transform .35s ease;
+}
+.poster:hover .poster-name { transform: translateY(-6px); }
+.poster-meta .ext { color: var(--accent); }
+
+/* Game assets: transparent pieces on soft cards, label always visible */
+.gallery.assets {
+  columns: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--cell, 200px), 1fr));
+  gap: 12px;
+}
+.gallery.assets figure {
+  margin: 0;
+  padding: 14px 14px 10px;
+  background: var(--panel);
+  border-radius: calc(var(--radius) + 4px);
+  display: flex; flex-direction: column;
+}
+.gallery.assets img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: contain;
+  transition: transform .3s ease;
+}
+.gallery.assets figure:hover img { transform: scale(1.05); }
+.gallery.assets figcaption {
+  position: static;
+  opacity: 1;
+  background: none;
+  padding: 8px 0 0;
+  text-align: center;
+  color: var(--text);
+  font-weight: 600;
+}
+
 /* Single animation project page */
 .back { color: var(--muted); text-decoration: none; }
 .back:hover { color: var(--accent); }
@@ -517,6 +565,11 @@ footer a { color: var(--muted); }
   .trailer-card { grid-column: auto; }
   .gallery.rows .row { flex-direction: column; }
   .ep-rail { display: none; }   /* phones use the jump links at the top and the arrow */
+  .gallery.assets { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .gallery.assets figure { padding: 10px 10px 8px; }
+  .posters { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 12px; }
+  .poster-title { font-size: 18px; }
+  .poster-name { font-size: 20px; padding: 40px 10px 10px; }
   .gallery.rows figure { flex: none; }
   .gallery.rows .feature { display: flex; flex-direction: column; aspect-ratio: auto; }
   .feature img { height: auto; aspect-ratio: var(--r); }
