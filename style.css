@@ -78,9 +78,11 @@ a { color: inherit; }
 .has-sub > a::after { content: " \25BE"; font-size: 11px; }
 .submenu {
   position: absolute; top: 100%; left: -16px;
+  border-top: 12px solid transparent;   /* drops the box below the underline but stays hoverable */
+  background-clip: padding-box !important;
   display: none !important;
   flex-direction: column; gap: 0 !important;
-  min-width: 180px;
+  white-space: nowrap;
   padding: 8px 0 !important;
   background: rgba(0,0,0,.9);
   border-radius: 6px;
@@ -314,7 +316,7 @@ footer a { color: var(--muted); }
   }
   .nav.open { display: flex; }
   .nav ul { flex-direction: column; gap: 10px; }
-  .submenu { position: static; display: flex !important; gap: 10px !important; background: none; padding: 10px 0 0 12px !important; }
+  .submenu { position: static; display: flex !important; gap: 10px !important; background: none; border-top: 0; padding: 10px 0 0 12px !important; }
   .submenu a { padding: 4px 0; }
   .project, .project-intro { grid-template-columns: 1fr; }
   .project-poster { max-width: 220px; }
