@@ -105,5 +105,30 @@ const updateToTop = () => toTop.classList.toggle("show", window.scrollY > 600);
 window.addEventListener("scroll", updateToTop, { passive: true });
 updateToTop();
 
+// Contact form: send through Formspree without leaving the page
+const form = document.querySelector(".contact-form");
+form?.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const status = form.querySelector(".form-status");
+  const button = form.querySelector("button");
+  button.disabled = true;
+  button.textContent = "Sending…";
+  status.className = "form-status";
+  status.textContent = "";
+  try {
+    const res = await fetch(form.action, { method: "POST", body: new FormData(form), headers: { Accept: "application/json" } });
+    if (!res.ok) throw new Error();
+    form.reset();
+    status.classList.add("ok");
+    status.textContent = "Thanks! Your message was sent — I'll get back to you soon.";
+  } catch {
+    status.classList.add("error");
+    status.innerHTML = 'Sorry, that didn\'t go through. Please email me at <a href="mailto:viziolimatias@gmail.com">viziolimatias@gmail.com</a>.';
+  } finally {
+    button.disabled = false;
+    button.textContent = "Send message";
+  }
+});
+
 // Current year in footer
 document.querySelectorAll(".year").forEach((el) => (el.textContent = new Date().getFullYear()));

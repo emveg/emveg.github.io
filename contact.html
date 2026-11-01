@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=7">
+  <link rel="stylesheet" href="style.css?v=8">
 </head>
 <body>
   <header class="hero" style="background-image:url('images/portfolio/hobbit-interior-final-render.webp'); background-position:center 40%">
@@ -54,12 +54,16 @@
           <a href="files/Matias-Vizioli-CV.pdf" target="_blank" rel="noopener">View CV</a>
         </div>
       </div>
-      <!-- This form opens the visitor's email app. For a hosted form, point action at a service like Formspree. -->
-      <form action="mailto:viziolimatias@gmail.com" method="post" enctype="text/plain">
-        <label>Name<input name="name" required></label>
-        <label>Email<input type="email" name="email" required></label>
+      <!-- Messages are delivered to viziolimatias@gmail.com through Formspree -->
+      <form class="contact-form" action="https://formspree.io/f/meaargbj" method="POST">
+        <label>Name<input name="name" autocomplete="name" required></label>
+        <label>Email<input type="email" name="email" autocomplete="email" required></label>
         <label>Message<textarea name="message" rows="6" required></textarea></label>
+        <input type="hidden" name="_subject" value="New message from your portfolio">
+        <!-- spam trap: real visitors never see or fill this -->
+        <input type="text" name="_gotcha" class="trap" tabindex="-1" autocomplete="off" aria-hidden="true">
         <button class="cta" type="submit">Send message</button>
+        <p class="form-status" role="status" aria-live="polite"></p>
       </form>
     </section>
   </main>
@@ -75,6 +79,6 @@
         </div>
     </div>
   </footer>
-  <script src="site.js?v=7"></script>
+  <script src="site.js?v=8"></script>
 </body>
 </html>
