@@ -113,8 +113,9 @@ document.querySelectorAll(".compare input").forEach((range) => {
   range.addEventListener("input", () => range.parentElement.style.setProperty("--pos", range.value + "%"));
 });
 
-// Floating episode panel: built from the page's jump links, shown once they scroll out of view
-const chips = document.querySelector(".chips");
+// Floating episode panel: built from the page's episode jump links, shown once they scroll out of view
+// (only the episode links — other pill rows, like the home page credits, link to other pages)
+const chips = document.querySelector('.chips[aria-label="Jump to episode"]');
 if (chips) {
   const rail = document.createElement("nav");
   rail.className = "ep-rail";
