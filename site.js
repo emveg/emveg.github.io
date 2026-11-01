@@ -1,10 +1,19 @@
 // Mobile menu toggle
 const toggle = document.querySelector(".menu-toggle");
 const nav = document.querySelector(".nav");
-toggle?.addEventListener("click", () => {
-  const open = nav.classList.toggle("open");
+const setMenu = (open) => {
+  nav.classList.toggle("open", open);
   toggle.setAttribute("aria-expanded", open);
+  toggle.innerHTML = open ? "&#10005;" : "&#9776;";   // ✕ while open, ☰ when closed
+};
+toggle?.addEventListener("click", (e) => {
+  e.stopPropagation();
+  setMenu(!nav.classList.contains("open"));
 });
+// close when a link is chosen, when tapping outside the menu, or with Esc
+nav?.addEventListener("click", (e) => { if (e.target.closest("a")) setMenu(false); });
+document.addEventListener("click", (e) => { if (nav?.classList.contains("open") && !nav.contains(e.target)) setMenu(false); });
+document.addEventListener("keydown", (e) => { if (e.key === "Escape" && nav?.classList.contains("open")) setMenu(false); });
 
 // Lightbox for gallery images and game screenshots
 const box = document.createElement("div");
