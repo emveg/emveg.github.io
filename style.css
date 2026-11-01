@@ -401,6 +401,17 @@ main { padding: 0 var(--gutter) 80px; }
 .chips a:hover { border-color: var(--accent); color: var(--accent); }
 section[id] { scroll-margin-top: 16px; }
 
+/* Home intro: one line about me and a row of credits */
+.intro .lead { margin: 0; max-width: 760px; }
+.credits-strip { align-items: center; margin-top: 18px; }
+.credits-label {
+  margin-right: 4px;
+  color: var(--muted);
+  font-size: 13px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase;
+}
+.credits-strip .see-all { border-color: var(--accent); color: var(--accent); }
+
 /* Looping clips sit in the same rows as images */
 .gallery.rows video {
   display: block;
@@ -532,6 +543,14 @@ section[id] { scroll-margin-top: 16px; }
 .pill-links a.cta-pill { background: var(--accent); border-color: var(--accent); color: var(--bg); font-weight: 700; }
 .pill-links a.cta-pill:hover { filter: brightness(1.08); color: var(--bg); }
 .cv-links { margin-top: 24px; }
+.hello { display: flex; align-items: center; gap: 20px; margin-bottom: 20px; }
+.hello h2 { margin: 0; }
+.portrait {
+  width: 120px; height: 120px;
+  border-radius: 50%;
+  box-shadow: 0 8px 24px rgba(0,0,0,.35);
+  flex: none;
+}
 .trap { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
 .form-status { margin: 0; min-height: 1.6em; font-weight: 600; }
 .form-status.ok { color: #9be38f; }
@@ -590,16 +609,62 @@ footer strong { display: block; }
 footer .socials { justify-content: center; margin-top: 8px; }
 footer a { color: var(--muted); }
 
+/* Touch screens have no hover, so captions are always shown */
+@media (hover: none) {
+  .gallery figcaption { opacity: 1; }
+}
+@media (hover: none) and (max-width: 760px) {
+  .gallery figure { overflow: visible; }
+  .gallery figure img { border-radius: var(--radius); }
+  .gallery figcaption {
+    position: static;
+    background: none;
+    padding: 6px 2px 4px;
+    color: var(--muted);
+    font-size: 13px;
+  }
+}
+
 /* ---------- Lightbox ---------- */
 .lightbox {
   position: fixed; inset: 0; z-index: 100;
-  display: none; place-items: center;
-  background: rgba(20, 14, 10, .94);
-  cursor: zoom-out;
-  padding: 24px;
+  display: none;
+  grid-template-columns: 64px minmax(0, 1fr) 64px;
+  align-items: center;
+  background: rgba(20, 14, 10, .95);
+  padding: 24px 12px;
 }
 .lightbox.open { display: grid; }
-.lightbox img { max-height: 90vh; width: auto; border-radius: var(--radius); }
+.lb-figure { margin: 0; display: flex; flex-direction: column; align-items: center; min-width: 0; }
+.lb-figure img {
+  max-width: 100%;
+  max-height: calc(100vh - 110px);
+  width: auto;
+  border-radius: var(--radius);
+}
+.lb-figure figcaption {
+  display: flex; gap: 14px; justify-content: center; align-items: baseline;
+  margin-top: 12px;
+  color: var(--text);
+  text-align: center;
+}
+.lb-count { color: var(--muted); font-size: 14px; }
+.lightbox button {
+  display: grid; place-items: center;
+  width: 48px; height: 48px;
+  border: 0; border-radius: 50%;
+  background: rgba(255,255,255,.08);
+  color: var(--fg);
+  font-size: 30px; line-height: 1;
+  cursor: pointer;
+  transition: background .2s;
+}
+.lightbox button:hover { background: var(--accent); color: var(--bg); }
+.lb-prev { grid-column: 1; justify-self: center; }
+.lb-next { grid-column: 3; justify-self: center; }
+.lb-figure { grid-column: 2; grid-row: 1; }
+.lb-close { position: absolute; top: 14px; right: 14px; font-size: 20px !important; }
+.lightbox.single .lb-prev, .lightbox.single .lb-next { visibility: hidden; }
 
 /* ---------- Mobile ---------- */
 @media (max-width: 760px) {
@@ -629,6 +694,12 @@ footer a { color: var(--muted); }
   .trailer-card { grid-column: auto; }
   .gallery.rows .row { flex-direction: column; }
   .ep-rail { display: none; }   /* phones use the jump links at the top and the arrow */
+  /* viewer on phones: image full width, arrows sit along the bottom (swipe also works) */
+  .lightbox { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr auto; padding: 60px 8px 20px; }
+  .lb-figure { grid-column: 1 / 3; grid-row: 1; }
+  .lb-figure img { max-height: calc(100vh - 200px); }
+  .lb-prev { grid-column: 1; grid-row: 2; justify-self: end; margin-right: 12px; }
+  .lb-next { grid-column: 2; grid-row: 2; justify-self: start; margin-left: 12px; }
   .gallery.assets { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
   .gallery.assets figure { padding: 10px 10px 8px; }
   .posters { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 12px; }

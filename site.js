@@ -15,23 +15,74 @@ nav?.addEventListener("click", (e) => { if (e.target.closest("a")) setMenu(false
 document.addEventListener("click", (e) => { if (nav?.classList.contains("open") && !nav.contains(e.target)) setMenu(false); });
 document.addEventListener("keydown", (e) => { if (e.key === "Escape" && nav?.classList.contains("open")) setMenu(false); });
 
-// Lightbox for gallery images and game screenshots
+// Lightbox: full-screen view with caption, close button, and previous/next
+// through the images of the same section (arrows, keyboard or swipe)
 const box = document.createElement("div");
 box.className = "lightbox";
-box.innerHTML = '<img alt="">';
+box.setAttribute("role", "dialog");
+box.setAttribute("aria-modal", "true");
+box.setAttribute("aria-label", "Image viewer");
+box.innerHTML = `
+  <button class="lb-close" aria-label="Close">&#10005;</button>
+  <button class="lb-prev" aria-label="Previous image">&#8249;</button>
+  <figure class="lb-figure"><img alt=""><figcaption><span class="lb-caption"></span><span class="lb-count"></span></figcaption></figure>
+  <button class="lb-next" aria-label="Next image">&#8250;</button>`;
 document.body.appendChild(box);
 const boxImg = box.querySelector("img");
+const boxCaption = box.querySelector(".lb-caption");
+const boxCount = box.querySelector(".lb-count");
+let group = [], current = 0, lastFocus = null;
+
+const captionOf = (img) => img.closest("figure")?.querySelector("figcaption")?.textContent.trim() || img.alt || "";
+function show(i) {
+  current = (i + group.length) % group.length;
+  const img = group[current];
+  boxImg.src = img.dataset.full || img.currentSrc || img.src;
+  boxImg.alt = img.alt;
+  boxCaption.textContent = captionOf(img);
+  boxCount.textContent = group.length > 1 ? `${current + 1} / ${group.length}` : "";
+  box.classList.toggle("single", group.length < 2);
+}
+function openBox(list, i) {
+  group = list;
+  lastFocus = document.activeElement;
+  show(i);
+  box.classList.add("open");
+  document.body.style.overflow = "hidden";
+  box.querySelector(".lb-close").focus();
+}
+function closeBox() {
+  box.classList.remove("open");
+  document.body.style.overflow = "";
+  lastFocus?.focus?.();
+}
 
 document.querySelectorAll(".gallery figure:not(.compare) img, .shots img").forEach((img) => {
   img.addEventListener("click", () => {
-    boxImg.src = img.dataset.full || img.src;
-    boxImg.alt = img.alt;
-    box.classList.add("open");
+    // step through the images in the same section of the page
+    const scope = img.closest("section") || document;
+    const list = [...scope.querySelectorAll(".gallery figure:not(.compare) img, .shots img")];
+    openBox(list, list.indexOf(img));
   });
 });
-box.addEventListener("click", () => box.classList.remove("open"));
+box.querySelector(".lb-close").addEventListener("click", closeBox);
+box.querySelector(".lb-prev").addEventListener("click", () => show(current - 1));
+box.querySelector(".lb-next").addEventListener("click", () => show(current + 1));
+box.addEventListener("click", (e) => { if (e.target === box) closeBox(); });   // click the dark backdrop
 document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") box.classList.remove("open");
+  if (!box.classList.contains("open")) return;
+  if (e.key === "Escape") closeBox();
+  if (e.key === "ArrowLeft") show(current - 1);
+  if (e.key === "ArrowRight") show(current + 1);
+});
+// swipe left/right on touch screens
+let touchX = null;
+box.addEventListener("touchstart", (e) => { touchX = e.touches[0].clientX; }, { passive: true });
+box.addEventListener("touchend", (e) => {
+  if (touchX === null) return;
+  const dx = e.changedTouches[0].clientX - touchX;
+  if (Math.abs(dx) > 50 && group.length > 1) show(current + (dx < 0 ? 1 : -1));
+  touchX = null;
 });
 
 // Area restoration viewers: each button shows one state of the area
@@ -50,10 +101,9 @@ document.querySelectorAll(".area").forEach((area) => {
     });
   });
   area.querySelector(".states").addEventListener("click", () => {
-    const shown = area.querySelector(".states img.on");
-    boxImg.src = shown.src;
-    boxImg.alt = shown.alt;
-    box.classList.add("open");
+    loadAll();
+    // open on the state being shown; arrows step through this area's states
+    openBox(imgs, imgs.findIndex((img) => img.classList.contains("on")));
   });
 });
 
