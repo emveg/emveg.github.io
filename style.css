@@ -609,20 +609,10 @@ footer strong { display: block; }
 footer .socials { justify-content: center; margin-top: 8px; }
 footer a { color: var(--muted); }
 
-/* Touch screens have no hover, so captions are always shown */
+/* Touch screens have no hover, so captions are hidden under the images (keeps the pages short);
+   they still show in the lightbox when an image is tapped */
 @media (hover: none) {
-  .gallery figcaption { opacity: 1; }
-}
-@media (hover: none) and (max-width: 760px) {
-  .gallery figure { overflow: visible; }
-  .gallery figure img { border-radius: var(--radius); }
-  .gallery figcaption {
-    position: static;
-    background: none;
-    padding: 6px 2px 4px;
-    color: var(--muted);
-    font-size: 13px;
-  }
+  .gallery figcaption { display: none; }
 }
 
 /* ---------- Lightbox ---------- */
