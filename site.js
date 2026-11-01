@@ -33,7 +33,8 @@ const boxCaption = box.querySelector(".lb-caption");
 const boxCount = box.querySelector(".lb-count");
 let group = [], current = 0, lastFocus = null;
 
-const captionOf = (img) => img.closest("figure")?.querySelector("figcaption")?.textContent.trim() || img.alt || "";
+// a visible caption if the image has one; Lily's Garden areas use their state name; otherwise none
+const captionOf = (img) => img.closest("figure")?.querySelector("figcaption")?.textContent.trim() || (img.closest(".area") ? img.alt : "");
 function show(i) {
   current = (i + group.length) % group.length;
   const img = group[current];
