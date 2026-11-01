@@ -69,7 +69,15 @@ document.querySelectorAll(".gallery figure:not(.compare) img, .shots img").forEa
 box.querySelector(".lb-close").addEventListener("click", closeBox);
 box.querySelector(".lb-prev").addEventListener("click", () => show(current - 1));
 box.querySelector(".lb-next").addEventListener("click", () => show(current + 1));
-box.addEventListener("click", (e) => { if (e.target === box) closeBox(); });   // click the dark backdrop
+// clicking anywhere outside the image closes it; a small margin around the image is forgiven so near-misses don't
+const CLICK_MARGIN = 40;
+box.addEventListener("click", (e) => {
+  if (e.target.closest("button")) return;
+  const r = boxImg.getBoundingClientRect();
+  const inside = e.clientX > r.left - CLICK_MARGIN && e.clientX < r.right + CLICK_MARGIN &&
+                 e.clientY > r.top - CLICK_MARGIN && e.clientY < r.bottom + CLICK_MARGIN;
+  if (!inside) closeBox();
+});
 document.addEventListener("keydown", (e) => {
   if (!box.classList.contains("open")) return;
   if (e.key === "Escape") closeBox();
