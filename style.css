@@ -261,6 +261,26 @@ main { padding: 0 var(--gutter) 80px; }
   font-weight: 600;
 }
 
+/* Building levels: one row per building, cut-out pieces on soft cards, all cards in a row the same height
+   (--h); a row that would overflow shrinks evenly instead of wrapping */
+.gallery.levels { columns: auto; display: grid; gap: 28px; }
+.levels h3 { margin: 0 0 10px; font-family: var(--display); font-weight: 600; font-size: 20px; }
+.levels .row { display: flex; gap: 10px; }
+.gallery.levels figure {
+  flex: 0 1 calc(var(--h, 230px) * var(--r) + 28px);
+  min-width: 0; margin: 0;
+  padding: 14px 14px 8px;
+  background: var(--panel);
+  border-radius: calc(var(--radius) + 4px);
+}
+.levels img { aspect-ratio: var(--r); object-fit: contain; }
+.gallery.levels figcaption {
+  position: static; opacity: 1; background: none;
+  padding: 6px 0 0;
+  text-align: center; color: var(--muted); font-size: 13px; font-weight: 600;
+}
+.levels .who { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }   /* read in the viewer, not shown on the card */
+
 /* Area restoration viewer: one card per area, buttons cross-fade between its states */
 .areas {
   display: grid;
@@ -692,6 +712,10 @@ footer a { color: var(--muted); }
   .lb-next { grid-column: 2; grid-row: 2; justify-self: start; margin-left: 12px; }
   .gallery.assets { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
   .gallery.assets figure { padding: 10px 10px 8px; }
+  .gallery.levels { gap: 20px; }
+  .levels h3 { font-size: 17px; margin-bottom: 8px; }
+  .levels .row { gap: 6px; }
+  .gallery.levels figure { --h: 120px; padding: 6px; }
   .posters { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 12px; }
   .poster-title { font-size: 18px; }
   .poster-name { font-size: 20px; padding: 40px 10px 10px; }
